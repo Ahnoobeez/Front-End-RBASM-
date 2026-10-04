@@ -7,9 +7,7 @@
             <a href="#" class="tab-link" onclick="switchTab(event, 'ConformeSection')">Conforme</a>
             <a href="#" class="tab-link" onclick="switchTab(event, 'PurchaseOrderSection')">Purchase Order</a>
             <a href="#" class="tab-link" onclick="switchTab(event, 'JobOrderSection')">Job Order</a>
-            <a href="#" class="tab-link" onclick="switchTab(event, 'MaterialRequisitionSection')">Material Requisiton</a>
             <a href="#" class="tab-link" onclick="switchTab(event, 'DeliveryReceiptSection')">Delivery Receipt</a>
-            <a href="#" class="tab-link" onclick="switchTab(event, 'InstallationReportSection')">Installation Report</a>
             <a href="#" class="tab-link" onclick="switchTab(event, 'CollectionReceiptSection')">Collection Receipt</a>
             <a href="#" class="tab-link" onclick="switchTab(event, 'savedRecordsSection')">Saved Records</a>
             
@@ -30,8 +28,7 @@
                 <div class="toolbar">
                     <h3 class="section-title">Client Information</h3>
                     <div class="button-group">
-                        <button class="btn btn-text"><i class='bx bx-save'></i> Save Project</button>
-                        <button class="btn btn-secondary" onClick="CreateClients()"><i class='bx bx-plus'></i> Save Client</button>
+                        <button type="button" class="btn btn-secondary" onclick="CreateClients()"><i class='bx bx-save'></i> Save Client</button>
                     </div>
                 </div>
 
@@ -78,6 +75,13 @@
 
             <!-- Project Request Details Section -->
             <div class="form-section">
+                <div class="toolbar">
+                    <h3 class="section-title">Project Request Details</h3>
+                    <div class="button-group">
+                        <button class="btn btn-text" onclick="CreateClientsProject()"><i class='bx bx-save'></i> Save Project</button>
+                    </div>
+                </div>
+
                 <div class="client-picker">
                     <label for="clientLookupInput">Select Client</label>
                     <div class="client-picker-controls">
@@ -89,21 +93,14 @@
                     <small>Select a saved client before editing the project request.</small>
                 </div>
 
-                <div class="toolbar">
-                    <h3 class="section-title">Project Request Details</h3>
-                    <div class="button-group">
-                        <button class="btn btn-text"><i class='bx bx-save'></i> Save Project</button>
-                    </div>
-                </div>
-
                 <div class="form-row">
                     <div class="form-group">
                         <label for="ProjectRequest_Attention">Attention</label>
                         <input type="text" id="ProjectRequest_Attention" class="form-group" data-client-dependent oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')" required>
                     </div>
                     <div class="form-group">
-                        <label for="ProjectRequest_BusinessDays">Business Style</label>
-                        <input type="text" id="ProjectRequest_BusinessDays" class="form-group" data-client-dependent oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')" required>
+                        <label for="ProjectRequest_BusinessStyle">Business Style</label>
+                        <input type="text" id="ProjectRequest_BusinessStyle" class="form-group" data-client-dependent oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')" required>
                     </div>
                     <div class="form-group">
                         <label for="ProjectRequest_ClientSubject">Client Subject</label>
@@ -142,9 +139,9 @@
 
                 <h4>Quotation Overview</h4>
                     <div class="quotation-button-group">
-                    <button class="btn btn-secondary">Generate Quote</button><i class='bx bx-generate'></i>
+                    <button type="button" id="Quotation_GenerateButton" class="btn btn-secondary">Generate Quote</button><i class='bx bx-generate'></i>
                     <button class="btn btn-secondary">Print</button><i class='bx bx-print'></i>    
-                    <button class="btn btn-text">Save</button><i class='bx bx-save'></i>
+                    <button type="button" id="Quotation_SaveItems" class="btn btn-text"><i class='bx bx-save'></i> Save</button>
                     </div>
 
                 </div>
@@ -165,7 +162,6 @@
 
     <!-- Header -->
     <div class="estimate-header">
-
         <div>
             <h3>
                 <i class='bx bx-calculator'></i>
@@ -173,120 +169,137 @@
             </h3>
             <p>Estimate project materials and pricing</p>
         </div>
-
+        <div class="form-group quotation-end-date">
+            <label for="Quotation_EndDate">End Date</label>
+            <input type="date" id="Quotation_EndDate" class="form-control">
+        </div>
     </div>
-
-
-    <!-- Branch -->
 
     <div class="branch-card">
-
-        <label for="MS_Branch">Branch</label>
-        <input type="text" id="Quotation_Branch" class="form-control" placeholder="">
-
+        <div class="project-title-header">
+            <label for="Quotation_Title">Project Title</label>
+            <button type="button" id="Quotation_AddItem" class="title-add-button">
+                <i class="bx bx-plus" aria-hidden="true"></i>
+                Add
+            </button>
+        </div>
+        <input type="text" id="Quotation_Title" class="form-control" placeholder="">
     </div>
 
-    <!-- Requirement Card -->
-
     <div class="requirement-card">
-
         <div class="requirement-header">
-
             <h4>Requirements</h4>
             <div class="requirement-button-group">
-            <button class="btn btn-primary">
-            <i class='bx bx-plus'></i>
-            Add
-            </button>
-
-            <button class="delete-btn">
-            <i class="bx bx-trash" /></i>
-            </button>
+                <button type="button" id="Quotation_AddRequirement" class="btn btn-primary">
+                    <i class="bx bx-plus" aria-hidden="true"></i>
+                    Add
+                </button>
+                <button type="button" id="Quotation_DeleteRequirement" class="delete-btn" aria-label="Delete last requirement" title="Delete last requirement">
+                    <i class="bx bx-trash" aria-hidden="true"></i>
+                </button>
             </div>
+        </div>
 
+        <div class="branch-card">
+            <label for="Quotation_Branch">Store Branch</label>
+            <input type="text" id="Quotation_Branch" class="form-control" placeholder="">
+        </div>
+
+        <div class="requirement-description-fields">
+            <div class="form-group">
+                <label for="Quotation_Requirement">Requirement</label>
+                <input type="text" id="Quotation_Requirement" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="Quotation_Description">Description</label>
+                <input type="text" id="Quotation_Description" class="form-control">
+            </div>
         </div>
 
         <div class="requirement-grid">
-
-            <div class="form-group full">
-                <label>Requirement Description</label>
-                <input type="text">
-            </div>
-
             <div class="form-group">
-                <label>Width (CM)</label>
+                <label for="Quotation_Width">Width (CM)</label>
                 <input type="text" id="Quotation_Width" class="form-control" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
             </div>
-
             <div class="form-group">
-                <label>Height (CM)</label>
-                <input type="text" id="Quotation_Height" class="form-control" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required">
+                <label for="Quotation_Height">Height (CM)</label>
+                <input type="text" id="Quotation_Height" class="form-control" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
             </div>
-
             <div class="form-group">
-                <label>Quantity</label>
-                <input type="text" id="Quotation_Quantity" class="form-control" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required">
+                <label for="Quotation_Quantity">Quantity</label>
+                <input type="text" id="Quotation_Quantity" class="form-control" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
             </div>
-
             <div class="form-group">
-                <label>Unit Price</label>
+                <label for="Quotation_UnitPrice">Unit Price</label>
                 <input type="text" id="Quotation_UnitPrice" class="form-control" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
             </div>
-
             <div class="form-group">
-                <label>Total Amount</label>
+                <label for="Quotation_Amount">Total Amount</label>
                 <input type="text" id="Quotation_Amount" class="form-control" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
+            </div>
+        </div>
+    </div>
+
+    <div class="quotation-estimate-results">
+        <div class="quotation-items-card">
+            <h4>Project Items</h4>
+            <div class="quotation-items-table-wrap">
+                <table class="quotation-items-table">
+                    <thead>
+                        <tr>
+                            <th>Project Title</th>
+                            <th>Width</th>
+                            <th>Height</th>
+                            <th>Quantity</th>
+                            <th>Unit Price</th>
+                            <th>Total Amount</th>
+                            <th class="quotation-actions-heading" aria-label="Row actions"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="Quotation_ItemsTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="summary-card">
+
+            <h4>Cost Summary</h4>
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <input type="text" id="Quotation_SubTotal" class="form-control" readonly>
+            </div>
+
+            <div class="summary-row">
+                <span>Less Discount</span>
+                <input type="text" id="Quotation_LessDiscount" class="form-control" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
+            </div>
+
+            <div class="summary-row">
+                <span>Ingress & Egress</span>
+                <input type="text" id="Quotation_IngressEgress" class="form-control" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
+            </div>
+
+            <div class="summary-total">
+                <span>Total Amount</span>
+                <input type="text" id="Quotation_TotalAmount" class="form-control" readonly>
             </div>
 
         </div>
 
-    </div>
-
-    <!-- Summary -->
-    <div class="summary-card">
-
-        <h4>Cost Summary</h4>
-        <div class="summary-row">
-            <span>Subtotal</span>
-            <input type="text" id="Quotation_SubTotal" class="form-control" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
+        <div class="quotation-terms-owner">
+            <div class="quotation-terms-field">
+                <label for="Quotation_TermsandConditions">Terms and Conditions</label>
+                <textarea id="Quotation_TermsandConditions"></textarea>
+            </div>
+            <div class="quotation-owner-field">
+                <label for="Quotation_ProjectOwner">Project Owner</label>
+                <input type="text" id="Quotation_ProjectOwner" oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')" required>
+            </div>
         </div>
-
-        <div class="summary-row">
-            <span>Less Discount</span>
-            <input type="text" id="Quotation_LessDiscount" class="form-control" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
-        </div>
-
-        <div class="summary-row">
-            <span>Ingress & Egress</span>
-            <input type="text" id="Quotation_IngressEgress" class="form-control" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
-        </div>
-
-        <div class="summary-total">
-            <span>Total Amount</span>
-            <input type="text" id="Quotation_TotalAmount" class="form-control" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
-        </div>
-
     </div>
 
 </div>
         </div>
-
-        <!-- Quotation Line Items Section -->
-        <div class="form-row full">
-            <h3 class="section-title">Terms and Conditions</h3>
-                        <div class="form-group">    
-                            <textarea id="Quotation_TermsandConditions" class="form-group" placeholder="" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"></textarea>
-
-
-                        </div>
-
-                        <div class="form-group">
-                            <br>
-                            <h3 class="section-title">Project Owner</h3>
-                            <input type="text" id="Quotation_ProjectOwner" class="form-group" oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')" required>
-                        </div>
-                </div>
-                </div>    
         </div>
         </div>
 
@@ -302,7 +315,7 @@
                 <div class="quotation-button-group">
                     
                  <button class="btn btn-secondary">Print</button><i class='bx bx-print'></i>
-                 <button class="btn btn-secondary">Save</button><i class='bx bx-save'></i>    
+                 <button type="button" id="Conforme_SaveButton" class="btn btn-secondary">Save</button><i class='bx bx-save'></i>    
                  
                  </div>
 
@@ -318,126 +331,18 @@
                     </div>
                     <small>Select a saved quotation overview before viewing the form details.</small>
                 </div>
-                
-                <div class="form-row">
-                    
-                    <div class="form-group-conforme">
-                        <label for="Conforme_CompanyName">Company Name</label>
-                        <input type="text" id="Conforme_CompanyName" class="form-group-conforme" oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')" required disabled>
-                    </div>
-                    <div class="form-group-conforme">
-                        <label for="Conforme_Telephone">Telephone No</label>
-                        <input type="text" id="Conforme_Telephone" class="form-group-conforme" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required disabled>
-                    </div>
-                     <div class="form-group-conforme">
-                        <label for="Conforme_PaymentTerms">Payment Terms</label>
-                        <input type="text" id="Conforme_PaymentTerms" class="form-group-conforme" placeholder="" pattern="[A-Za-z]" required disabled>
-                    </div>
-                </div>
 
-                <div class="form-row">
-                     <div class="form-group-conforme">
-                        <label for="Conforme_ContactPerson">Contact Person</label>
-                        <input type="text" id="Conforme_ContactPerson" class="form-group-conforme" oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')" required disabled>
-                    </div>
-                    <div class="form-group-conforme">
-                        <label for="Conforme_EmailAddress">Email Address</label>
-                        <input type="email" id="Conforme_EmailAddress" class="form-group-conforme" placeholder="" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" required disabled>
-                    </div>
-                    <div class="form-group-conforme">
-                        <label for="Conforme_TinNumber">TIN Number</label>
-                        <input type="text" id="Conforme_TinNumber" class="form-group-conforme" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required disabled>
-                    </div>
-                   
-                    
-                </div>
-                <div class="form-row full">
-                        <div class="form-group-conforme">
-                            <label for="Conforme_CompanyAddress">Company Address</label>
-                            <input type="email" id="Conforme_CompanyAddress" class="form-group-conforme" placeholder="" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" required disabled>
-                        </div>
-                </div>
+            <form id="ConformeUploadForm" class="purchase-order-form" enctype="multipart/form-data">
+                <label for="Conforme_File" class="purchase-order-dropzone" id="Conforme_Dropzone">
+                    <i class="bx bx-cloud-upload"></i>
+                    <strong>Choose files or drag them here</strong>
+                    <span>Upload conforme documents</span>
+                    <input type="file" id="Conforme_File" name="conformeFiles" accept=".pdf,application/pdf" multiple>
+                </label>
+                <ul class="purchase-order-file-list" id="Conforme_FileList" aria-live="polite"></ul>
+                <p class="purchase-order-file-feedback" id="Conforme_FileFeedback" role="status" aria-live="polite"></p>
+            </form>
             </div>
-
-           <!-- Conforme Requirement section -->
-
-            <div class="requirement-card">
-
-        <div class="requirement-header">
-
-            <h4>Requirements</h4>
-
-        </div>
-
-        <div class="requirement-grid">
-
-            <div class="form-group-conforme full">
-                <label>Requirement Description</label>
-                <input type="text">
-            </div>
-
-            <div class="form-group-conforme">
-                <label>Width (CM)</label>
-                <input type="text" id="MS_Width" class="form-control" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required disabled>
-            </div>
-
-            <div class="form-group-conforme">
-                <label>Height (CM)</label>
-                <input type="text" id="MS_Height" class="form-control" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required disabled>
-            </div>
-
-            <div class="form-group-conforme">
-                <label>Quantity</label>
-                <input type="text" id="MS_Quantity" class="form-control" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required disabled>
-            </div>
-
-            <div class="form-group-conforme">
-                <label>Unit Price</label>
-                <input type="text" id="MS_UnitPrice" class="form-control" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required disabled>
-            </div>
-
-            <div class="form-group-conforme">
-                <label>Total Amount</label>
-                <input type="text" id="MS_Amount" class="form-control" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required disabled>
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- Summary -->
-    <div class="summary-card">
-
-        <h4>Cost Summary</h4>
-        <div class="summary-row">
-            <span>Subtotal</span>
-            <input type="text" id="MS_SubTotal" class="form-control" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required disabled>
-        </div>
-
-        <div class="summary-row">
-            <span>Less Discount</span>
-            <input type="text" id="MS_LessDiscount" class="form-control" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required disabled>
-        </div>
-
-        <div class="summary-row">
-            <span>Ingress & Egress</span>
-            <input type="text" id="MS_IngressEgress" class="form-control" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required disabled>
-        </div>
-
-        <div class="summary-total">
-            <span>Total Amount</span>
-            <input type="text" id="MS_TotalAmount" class="form-control" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required disabled>
-        </div>
-
-    </div>
-
-    <!-- Quotation Line Items Section -->
-        <div class="form-row full">
-            <h3 class="section-title">Terms and Conditions</h3>
-                        <div class="form-group-conforme">    
-                            <input type="email" id="MS_EmailAddress" class="form-group-conforme" placeholder="" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" required disabled>
-                        </div>
-                </div> 
 
 </div>
         
@@ -451,11 +356,22 @@
                 </div>
 
                 <form id="PurchaseOrderForm" class="purchase-order-form" enctype="multipart/form-data">
+                    <div class="client-picker">
+                        <label for="purchaseOrderConformeLookupInput">Select Saved Conforme</label>
+                        <div class="client-picker-controls">
+                            <input type="text" id="purchaseOrderConformeLookupInput" placeholder="Select a saved Conforme" readonly>
+                            <button type="button" id="openPurchaseOrderConformePicker" class="square-button" aria-label="Open saved Conforme files" title="Open saved Conforme files">
+                                <i class="bx bx-search"></i>
+                            </button>
+                        </div>
+                        <input type="hidden" id="PurchaseOrder_ConformeID" name="conformeId">
+                    </div>
+
                     <label for="PurchaseOrder_File" class="purchase-order-dropzone" id="PurchaseOrder_Dropzone">
                         <i class="bx bx-cloud-upload"></i>
                         <strong>Choose files or drag them here</strong>
                         <span>Upload purchase order documents</span>
-                        <input type="file" id="PurchaseOrder_File" name="purchaseOrderFile" multiple>
+                        <input type="file" id="PurchaseOrder_File" name="purchaseOrderFile" accept=".pdf,application/pdf" multiple>
                     </label>
                     <ul class="purchase-order-file-list" id="PurchaseOrder_FileList" aria-live="polite"></ul>
                 </form>
@@ -476,6 +392,7 @@
                     <table class="clients-table">
                         <thead>
                             <tr>
+                                <th>Client ID</th>
                                 <th>Client Name</th>
                                 <th>Telephone</th>
                                 <th>Address</th>
@@ -502,17 +419,16 @@
                     <table class="clients-table">
                         <thead>
                             <tr>
-                                <th>project_ID</th>
-                                <th>client_ID</th>
-                                <th>attention</th>
-                                <th>business_Style</th>
-                                <th>client_Subject</th>
-                                <th>fileID</th>
-                                <th>representative</th>
-                                <th>contact_Person</th>
-                                <th>account_Executive</th>
-                                <th>date</th>
-                                <th>time</th>
+                                <th>Project ID</th>
+                                <th>Client ID</th>
+                                <th>Attention</th>
+                                <th>Business Style</th>
+                                <th>Client Subject</th>
+                                <th>Representative</th>
+                                <th>Contact Person</th>
+                                <th>Account Executive</th>
+                                <th>Date</th>
+                                <th>Time</th>
                             </tr>
                         </thead>
                         <tbody id="projectRequestPickerTableBody"></tbody>
@@ -524,37 +440,23 @@
         <div id="quotationOverviewPickerModal" class="client-picker-modal" hidden>
             <div class="client-picker-dialog" role="dialog" aria-modal="true" aria-labelledby="quotationOverviewPickerTitle">
                 <div class="client-picker-dialog-header">
-                    <h3 id="quotationOverviewPickerTitle">Select Quotation Overview</h3>
+                    <h3 id="quotationOverviewPickerTitle">Select Saved Quotation</h3>
                     <button type="button" id="closeQuotationOverviewPicker" class="modal-close" aria-label="Close">&times;</button>
                 </div>
                 <div class="client-picker-search">
-                    <input type="text" id="quotationOverviewPickerSearch" placeholder="Search quotation records...">
+                    <input type="text" id="quotationOverviewPickerSearch" placeholder="Search saved quotations...">
                 </div>
                 <div class="client-picker-table-wrap">
                     <table class="clients-table">
                         <thead>
                             <tr>
-                                <th>quotation_ID</th>
-                                <th>client_ID</th>
-                                <th>project_ID</th>
-                                <th>title</th>
-                                <th>store</th>
-                                <th>description</th>
-                                <th>width</th>
-                                <th>height</th>
-                                <th>quantity</th>
-                                <th>unit_Price</th>
-                                <th>total_Amount</th>
-                                <th>sub_Total</th>
-                                <th>less_Discount</th>
-                                <th>ingress_and_Engress</th>
-                                <th>overall_Total</th>
-                                <th>status</th>
-                                <th>comment</th>
-                                <th>terms_Condition</th>
-                                <th>start_Date</th>
-                                <th>time</th>
-                                <th>end_Date</th>
+                                <th>Quotation_ID</th>
+                                <th>Company</th>
+                                <th>Attention</th>
+                                <th>Title</th>
+                                <th>Total_Amount</th>
+                                <th>Date</th>
+                                <th>End_Date</th>
                             </tr>
                         </thead>
                         <tbody id="quotationOverviewPickerTableBody"></tbody>
@@ -563,88 +465,178 @@
             </div>
         </div>
 
-
-        <!-- Job Order Section -->
-        <div id="JobOrderSection" class="tab-content hidden">
-
-        <div class="form-section">
-            <div class="quotation-header">
-
-             <h4>Material Requistion</h4>
-                <div class="quotation-button-group">
-                    
-                 <button class="btn btn-secondary">Print</button><i class='bx bx-print'></i>
-                 <button class="btn btn-secondary">Save</button><i class='bx bx-save'></i>    
-                 
-                 </div>
-
-             </div>
-            
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="JobOrder_Title">Title</label>
-                    <input type="text" id="JobOrder_Title" class="form-control" placeholder="" required >
+        <div id="purchaseOrderConformePickerModal" class="client-picker-modal" hidden>
+            <div class="client-picker-dialog" role="dialog" aria-modal="true" aria-labelledby="purchaseOrderConformePickerTitle">
+                <div class="client-picker-dialog-header">
+                    <h3 id="purchaseOrderConformePickerTitle">Select Saved Conforme</h3>
+                    <button type="button" id="closePurchaseOrderConformePicker" class="modal-close" aria-label="Close">&times;</button>
                 </div>
-                <div class="form-group">
-                    <label for="JobOrder_ClientID">Client ID</label>
-                    <input type="text" id="JobOrder_ClientID" class="form-control" placeholder="" required disabled>
+                <div class="client-picker-search">
+                    <input type="text" id="purchaseOrderConformePickerSearch" placeholder="Search saved Conforme files...">
                 </div>
-                <div class="form-group">
-                    <label for="JobOrder_QuotationID">Quotation ID</label>
-                    <input type="text" id="JobOrder_QuotationID" class="form-control" placeholder="" required disabled>
-                </div>
-                <div class="form-group">
-                    <label for="JobOrder_ProjectID">Project ID</label>
-                    <input type="text" id="JobOrder_ProjectID" class="form-control" placeholder="" required disabled>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="JobOrder_DateandTime">Date and Time Created</label>
-                    <input type="datetime-local" id="JobOrder_DateandTime" class="form-control" placeholder="" required>
-                    
-                </div>
-                <div class="form-group">
-                    <label for="JobOrder_TargetDeliveryDate">Target Delivery Date</label>
-                    <input type="datetime-local" id="JobOrder_TargetDeliveryDate" class="form-control" placeholder="" required>
-                </div>
-                <div class="form-group">
-                    <label for="JobOrder_DateDelivered">Date Delivered</label>
-                    <input type="datetime-local" id="JobOrder_DateDelivered" class="form-control" placeholder="" required>
-                </div>
-                <div class="form-group">
-                    <label for="JobOrder_InstallationDate">Installation Date</label>
-                    <input type="datetime-local" id="JobOrder_InstallationDate" class="form-control" placeholder="" required>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="date_of_transaction">Material Code</label>
-                    <input type="text" id="JobOrder_Date" class="form-control" placeholder="" required>
-                </div>
-                <div class="form-group">
-                    <label for="payment_mode">Width</label>
-                    <input type="text" id="JobOrder_PaymentMode" class="form-control" placeholder="" required>
-                </div>
-                <div class="form-group">
-                    <label for="reference_number">Height</label>
-                    <input type="text" id="JobOrder_ReferenceNumber" class="form-control" placeholder="" required>
-                </div>
-                <div class="form-group">
-                    <label for="ledger_status">Quantity</label>
-                    <input type="text" id="JobOrder_Quantity" class="form-control" placeholder="" required>
-                </div>
-            </div>
-
-            <div class="form-row full">
-                <div class="form-group">
-                    <label for="sales_analysis_remarks">Sales Analysis Remarks</label>
-                    <input type="text" id="JobOrder_SalesAnalysis" class="form-control" placeholder="">
+                <div class="client-picker-table-wrap">
+                    <table class="clients-table">
+                        <thead>
+                            <tr>
+                                <th>Conforme ID</th>
+                                <th>Client Name</th>
+                                <th>File Name</th>
+                            </tr>
+                        </thead>
+                        <tbody id="purchaseOrderConformePickerTableBody"></tbody>
+                    </table>
                 </div>
             </div>
         </div>
+
+        <div id="jobOrderConformePickerModal" class="client-picker-modal" hidden>
+            <div class="client-picker-dialog" role="dialog" aria-modal="true" aria-labelledby="jobOrderConformePickerTitle">
+                <div class="client-picker-dialog-header">
+                    <h3 id="jobOrderConformePickerTitle">Select Saved Conforme</h3>
+                    <button type="button" id="closeJobOrderConformePicker" class="modal-close" aria-label="Close">&times;</button>
+                </div>
+                <div class="client-picker-search">
+                    <input type="text" id="jobOrderConformePickerSearch" placeholder="Search saved Conforme files...">
+                </div>
+                <div class="client-picker-table-wrap">
+                    <table class="clients-table">
+                        <thead>
+                            <tr>
+                                <th>Conforme ID</th>
+                                <th>Client Name</th>
+                                <th>File Name</th>
+                            </tr>
+                        </thead>
+                        <tbody id="jobOrderConformePickerTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Job Order Section -->
+        <div id="JobOrderSection" class="tab-content hidden">
+            <div class="form-section job-order-form">
+                <div class="quotation-header">
+                    <h4>Job Order</h4>
+                    <div class="quotation-button-group">
+                        <button type="button" class="btn btn-secondary" onclick="window.print()"><i class="bx bx-printer"></i> Print</button>
+                        <button type="button" id="JobOrder_Save" class="btn btn-secondary"><i class="bx bx-save"></i> Save</button>
+                    </div>
+                </div>
+
+                <div class="client-picker">
+                    <label for="jobOrderConformeLookupInput">Select Conforme</label>
+                    <div class="client-picker-controls">
+                        <input type="text" id="jobOrderConformeLookupInput" placeholder="Select a saved Conforme" readonly>
+                        <input type="hidden" id="JobOrder_ConformeID">
+                        <button type="button" id="openJobOrderConformePicker" class="square-button" aria-label="Open saved Conforme files" title="Open saved Conforme files">
+                            <i class="bx bx-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="JobOrder_Client">Client</label>
+                        <input type="text" id="JobOrder_Client" class="form-control" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="JobOrder_Address">Address</label>
+                        <input type="text" id="JobOrder_Address" class="form-control" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="JobOrder_Telephone">Tel. No.</label>
+                        <input type="tel" id="JobOrder_Telephone" class="form-control" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="JobOrder_ContactPerson">Contact Person</label>
+                        <input type="text" id="JobOrder_ContactPerson" class="form-control" readonly>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="JobOrder_AccountExecutive">Account Executive</label>
+                        <input type="text" id="JobOrder_AccountExecutive" class="form-control" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="JobOrder_InstallationDate">Installation Date</label>
+                        <input type="date" id="JobOrder_InstallationDate" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="JobOrder_TargetDeliveryDate">Target Date for Delivery</label>
+                        <input type="date" id="JobOrder_TargetDeliveryDate" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="JobOrder_DateDelivered">Date Delivered</label>
+                        <input type="date" id="JobOrder_DateDelivered" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="requirement-header">
+                        <h3>Production Items</h3>
+                    </div>
+                    <div class="quotation-items-table-wrap">
+                        <table class="quotation-items-table">
+                            <thead>
+                                <tr>
+                                    <th>Project Title</th>
+                                    <th>Width</th>
+                                    <th>Height</th>
+                                    <th>Quantity</th>
+                                    <th>Artist Initial</th>
+                                    <th>Prod'n Initial</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody id="JobOrder_ItemsTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <h3 class="section-title">Instructions</h3>
+                <div class="form-row">
+                    <fieldset class="form-group job-order-radio-group">
+                        <legend>Bleeding</legend>
+                        <div class="job-order-radio-options">
+                            <label class="job-order-radio-option"><input type="radio" name="JobOrder_Bleeding" value="with"> With</label>
+                            <label class="job-order-radio-option"><input type="radio" name="JobOrder_Bleeding" value="without"> Without</label>
+                        </div>
+                    </fieldset>
+                    <fieldset class="form-group job-order-radio-group">
+                        <legend>Tiling</legend>
+                        <div class="job-order-radio-options">
+                            <label class="job-order-radio-option"><input type="radio" name="JobOrder_Tiling" value="with"> With</label>
+                            <label class="job-order-radio-option"><input type="radio" name="JobOrder_Tiling" value="without"> Without</label>
+                        </div>
+                    </fieldset>
+                    <fieldset class="form-group job-order-radio-group">
+                        <legend>Eyelet</legend>
+                        <div class="job-order-radio-options">
+                            <label class="job-order-radio-option"><input type="radio" name="JobOrder_Eyelet" value="with"> With</label>
+                            <label class="job-order-radio-option"><input type="radio" name="JobOrder_Eyelet" value="without"> Without</label>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="form-row full">
+                    <div class="form-group">
+                        <label for="JobOrder_SpecialInstruction">Special Instruction</label>
+                        <textarea id="JobOrder_SpecialInstruction" class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
+
+                <h3 class="section-title">Delivery</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="JobOrder_DeliveryNumber">Delivery No.</label>
+                        <input type="text" id="JobOrder_DeliveryNumber" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="JobOrder_CheckedBy">Checked By</label>
+                        <input type="text" id="JobOrder_CheckedBy" class="form-control">
+                    </div>
+                </div>
+            </div>
         </div>
 
 
@@ -769,276 +761,124 @@
                 <div class="quotation-button-group">
                     
                  <button class="btn btn-secondary">Print</button><i class='bx bx-print'></i>
-                 <button class="btn btn-secondary">Save</button><i class='bx bx-save'></i>    
+                 <button type="button" id="DeliveryReceipt_Save" class="btn btn-secondary">Save</button><i class='bx bx-save'></i>    
                  
                  </div>
 
              </div>
             
             
+            <div class="client-picker">
+                <label for="deliveryReceiptJobOrderLookupInput">Select Job Order</label>
+                <div class="client-picker-controls">
+                    <input type="text" id="deliveryReceiptJobOrderLookupInput" placeholder="Select a saved Job Order" readonly>
+                    <input type="hidden" id="DeliveryReceipt_JobOrderID">
+                    <button type="button" id="openDeliveryReceiptJobOrderPicker" class="square-button" aria-label="Open saved Job Orders" title="Open saved Job Orders">
+                        <i class="bx bx-search"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div id="deliveryReceiptJobOrderPickerModal" class="client-picker-modal" hidden>
+                <div class="client-picker-dialog" role="dialog" aria-modal="true" aria-labelledby="deliveryReceiptJobOrderPickerTitle">
+                    <div class="client-picker-dialog-header">
+                        <h3 id="deliveryReceiptJobOrderPickerTitle">Select Saved Job Order</h3>
+                        <button type="button" id="closeDeliveryReceiptJobOrderPicker" class="modal-close" aria-label="Close">&times;</button>
+                    </div>
+                    <div class="client-picker-search">
+                        <input type="text" id="deliveryReceiptJobOrderPickerSearch" placeholder="Search saved Job Orders...">
+                    </div>
+                    <div class="client-picker-table-wrap">
+                        <table class="clients-table">
+                            <thead>
+                                <tr>
+                                    <th>Job Order ID</th>
+                                    <th>Client Name</th>
+                                    <th>Title</th>
+                                    <th>Date Delivered</th>
+                                </tr>
+                            </thead>
+                            <tbody id="deliveryReceiptJobOrderPickerTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
             <div class="form-row">
                 <div class="form-group">
                     <label for="DeliveryReceipt_Client">Client</label>
-                    <input type="text" id="DeliveryReceipt_Client" class="form-control" placeholder="" required>
+                    <input type="text" id="DeliveryReceipt_Client" class="form-control" placeholder="" required disabled>
                 </div>
                 <div class="form-group">
                     <label for="DeliveryReceipt_Address">Address</label>
-                    <input type="text" id="DeliveryReceipt_Address" class="form-control" placeholder="" required>
-                </div>
-                <div class="form-group">
-                    <label for="DeliveryReceipt_DateandTime">Date and Time</label>
-                    <input type="datetime-local" id="DeliveryReceipt_DateandTime" class="form-control" placeholder="">
+                    <input type="text" id="DeliveryReceipt_Address" class="form-control" placeholder="" required disabled>
                 </div>
                 <div class="form-group">
                     <label for="DeliveryReceipt_Terms">Terms</label>
-                    <input type="text" id="DeliveryReceipt_Terms" class="form-control" placeholder="" required>
+                    <input type="text" id="DeliveryReceipt_Terms" class="form-control" placeholder="" required disabled>
                 </div>
-            </div>
+                </div>
             <div class="form-section">
 
-            <div class="requirement-header">
+                <div class="requirement-header">
+                    <h3>Items</h3>
+                </div>
 
-            <h3>Items</h3>
-            <div class="deliveryreceipt-button-group">
-            <button class="btn btn-primary">
-            <i class='bx bx-plus'></i>
-            Add
-            </button>
-
-            <button class="delete-btn">
-            <i class="bx bx-trash" /></i>
-            </button>
-            </div>
-
+                <div class="quotation-items-table-wrap">
+                    <table class="quotation-items-table delivery-receipt-items-table">
+                        <thead>
+                            <tr>
+                                <th id="DeliveryReceipt_ProjectTitle" class="delivery-receipt-project-title" colspan="3">Project Title</th>
+                            </tr>
+                            <tr>
+                                <th>Quantity</th>
+                                <th>Requirement</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DeliveryReceipt_ItemsTableBody"></tbody>
+                    </table>
+                </div>
         </div>
 
-             <div class="deliveryreceiptitems-grid">
-
-            <div class="form-group">
-                    <label for="DeliveryReceipt_Quantity">Quantity</label>
-                    <input type="text" id="DeliveryReceipt_Quantity" class="form-group-conforme" oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')" required>
-            </div>
-
-            <div class="form-group">
-                    <label for="DeliveryReceipt_Unit">Unit</label>
-                    <input type="text" id="DeliveryReceipt_Unit" class="form-group-conforme" oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')" required>
-            </div>
-
-            <div class="form-group">
-                    <label for="DeliveryReceipt_Description">Description</label>
-                    <input type="text" id="DeliveryReceipt_Description" class="form-group-conforme" oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')" required>
-            </div>
-        </div>
-        </div>
-
-        <div class="form-row">
+        <div class="form-row delivery-receipt-signoffs">
                 <div class="form-group">
                     <label for="DeliveryReceipt_PreparedBy">Prepared by:</label>
-                    <input type="text" id="DeliveryReceipt_PreparedBy" class="form-control" placeholder="" required>
+                    <div class="delivery-receipt-upload" data-file-upload>
+                        <input type="file" id="DeliveryReceipt_PreparedBy" class="delivery-receipt-upload-input" accept="image/*" aria-describedby="DeliveryReceipt_PreparedByName">
+                        <label for="DeliveryReceipt_PreparedBy" class="delivery-receipt-upload-button">
+                            <i class="bx bx-upload" aria-hidden="true"></i>
+                            Choose or drop a file
+                        </label>
+                        <span id="DeliveryReceipt_PreparedByName" class="delivery-receipt-file-name">No file selected</span>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="DeliveryReceipt_ApprovedBy">Approved by:</label>
-                    <input type="text" id="DeliveryReceipt_ApprovedBy" class="form-control" placeholder="" required>
+                    <div class="delivery-receipt-upload" data-file-upload>
+                        <input type="file" id="DeliveryReceipt_ApprovedBy" class="delivery-receipt-upload-input" accept="image/*" aria-describedby="DeliveryReceipt_ApprovedByName">
+                        <label for="DeliveryReceipt_ApprovedBy" class="delivery-receipt-upload-button">
+                            <i class="bx bx-upload" aria-hidden="true"></i>
+                            Choose or drop a file
+                        </label>
+                        <span id="DeliveryReceipt_ApprovedByName" class="delivery-receipt-file-name">No file selected</span>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="DeliveryReceipt_ReceivedBy">Received by:</label>
-                    <input type="text" id="DeliveryReceipt_ReceivedBy" class="form-control" placeholder="" required>
+                    <div class="delivery-receipt-upload" data-file-upload>
+                        <input type="file" id="DeliveryReceipt_ReceivedBy" class="delivery-receipt-upload-input" accept="image/*" aria-describedby="DeliveryReceipt_ReceivedByName">
+                        <label for="DeliveryReceipt_ReceivedBy" class="delivery-receipt-upload-button">
+                            <i class="bx bx-upload" aria-hidden="true"></i>
+                            Choose or drop a file
+                        </label>
+                        <span id="DeliveryReceipt_ReceivedByName" class="delivery-receipt-file-name">No file selected</span>
+                    </div>
                 </div>
             </div>
         </div>
         </div>
 
-
-
-        <!-- Installation Report Section -->
-        <div id="InstallationReportSection" class="tab-content hidden">
-
-        <div class="form-section">
-            <div class="quotation-header">
-
-             <h4>Installation Report</h4>
-                <div class="quotation-button-group">
-                    
-                 <button class="btn btn-secondary">Print</button><i class='bx bx-print'></i>
-                 <button class="btn btn-secondary">Save</button><i class='bx bx-save'></i>    
-                 
-                 </div>
-
-             </div>
-            
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="MaterialRequisition_ControlNumber">Client Name</label>
-                    <input type="text" id="MaterialRequisition_ControlNumber" class="form-control" placeholder="" required>
-                </div>
-                <div class="form-group">
-                    <label for="MaterialRequisition_From">Project Name</label>
-                    <input type="text" id="MaterialRequisition_From" class="form-control" placeholder="" required>
-                </div>
-                <div class="form-group">
-                    <label for="MaterialRequisition_To">Location</label>
-                    <input type="text" id="MaterialRequisition_To" class="form-control" placeholder="" required>
-                </div>
-                <div class="form-group">
-                    <label for="MaterialRequisition_DateandTime">Date</label>
-                    <input type="datetime-local" id="MaterialRequisition_DateandTime" class="form-control" placeholder="">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="MaterialRequisition_ControlNumber">Time Started</label>
-                    <input type="text" id="MaterialRequisition_ControlNumber" class="form-control" placeholder="" required>
-                </div>
-                <div class="form-group">
-                    <label for="MaterialRequisition_From">Time Ended</label>
-                    <input type="text" id="MaterialRequisition_From" class="form-control" placeholder="" required>
-                </div>
-                <div class="form-group">
-                    <label for="MaterialRequisition_To">Installers</label>
-                    <textarea id="Client_CompanyAddress" class="form-group" placeholder="" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"></textarea>
-                </div>
-            </div>
-
-            <!-- Client section feedback-->
-            <div class="form-section">
-                <h3 class="section-title">Fill up by client:</h3>
-
-                <div class="">
-                    <p>Are the installers on time in the site?</p><br>
-  
-                    <input type="radio" id="OnTimeYes" name="OnTime" value="Yes" checked>
-                    <label for="OnTimeyes">Yes</label>
-
-                    <input type="radio" id="OnTimeNo" name="OnTime" value="No">
-                    <label for="OnTimeno">No</label><br>
-                    <br>
-                </div>
-                <div class="">
-                    <p>Are the installers wearing company uniform and ID?</p><br>
-  
-                    <input type="radio" id="WearingUniformYes" name="WearingUniform" value="Yes" checked>
-                    <label for="WearingUniformYes">Yes</label>
-
-                    <input type="radio" id="WearingUniformNo" name="WearingUniform" value="No">
-                    <label for="WearingUniformNo">No</label><br>
-                    <br>
-                </div>
-                <div class="">
-                    <p>Are the graphics properly installed in the right place?</p><br>
-  
-                    <input type="radio" id="InstalledProperlyYes" name="InstalledProperly" value="Yes" checked>
-                    <label for="InstalledProperlyYes">Yes</label>
-
-                    <input type="radio" id="InstalledProperlyNo" name="InstalledProperly" value="No">
-                    <label for="InstalledProperlyNo">No</label><br>
-                    <br>
-                </div>
-                <div class="">
-                    <p>Are there any problems occured during installation?</p><br>
-  
-                    <input type="radio" id="ProblemsOccuredYes" name="ProblemsOccured" value="Yes" checked>
-                    <label for="ProblemsOccuredYes">Yes</label>
-
-                    <input type="radio" id="ProblemsOccuredNo" name="ProblemsOccured" value="No">
-                    <label for="ProblemsOccuredNo">No</label><br>
-                    <br>
-
-                    <p>If yes kindly: 
-                        Note: 
-
-                        <textarea id="ProblemsOccuredRemarks" class="form-group" placeholder="" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"></textarea>
-                    </p><br>
-                    
-                </div>
-
-                <div class="">
-                    <p>Is the are clean before they leave?</p><br>
-  
-                    <input type="radio" id="AreaCleanYes" name="AreaClean" value="Yes" checked>
-                    <label for="AreaCleanYes">Yes</label>
-
-                    <input type="radio" id="AreaCleanNo" name="AreaClean" value="No">
-                    <label for="AreaCleanNo">No</label><br>
-                    <br>
-                </div>
-
-                <div class="">
-                    <p>Are the installers well mannered?</p><br>
-  
-                    <input type="radio" id="WellManneredYes" name="WellMannered" value="Yes" checked>
-                    <label for="WellManneredYes">Yes</label>
-
-                    <input type="radio" id="WellManneredNo" name="WellMannered" value="No">
-                    <label for="WellManneredNo">No</label><br>
-                    <br>
-
-                    <p>Client Remarks: 
-                        <textarea id="WellManneredRemarks" class="form-group" placeholder="" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"></textarea>
-                    </p><br>
-                    
-                </div>
-
-                <!-- Installer section feedback-->
-            <div class="form-section">
-                <h3 class="section-title">Fill up by installer:</h3>
-
-                <div class="">
-                    <p>Are there any obstruction or obstacles in the area where the installation grapics needs to be placed?</p><br>
-  
-                    <input type="radio" id="ObstructionYes" name="Obstruction" value="Yes" checked>
-                    <label for="ObstructionYes">Yes</label>
-
-                    <input type="radio" id="ObstructionNo" name="Obstruction" value="No">
-                    <label for="ObstructionNo">No</label><br>
-                    <br>
-
-                    <p>If yes, please provide some details below: 
-                        <textarea id="ObstuctionRemarks" class="form-group" placeholder="" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"></textarea>
-                    </p><br>
-                </div>
-
-                <div class="">
-                    <p>Are there any damage on the graphics installed?</p><br>
-  
-                    <input type="radio" id="DamageGraphicsYes" name="DamageGraphics" value="Yes" checked>
-                    <label for="DamageGraphicsYes">Yes</label>
-
-                    <input type="radio" id="DamageGraphicsNo" name="DamageGraphics" value="No">
-                    <label for="DamageGraphicsNo">No</label><br>
-                    <br>
-
-                    <p>If yes, please provide some details below: 
-                        <textarea id="DamageGraphics" class="form-group" placeholder="" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"></textarea>
-                    </p><br>
-                </div>
-
-                <div class="">
-                    <p>Installer's Remarks: </p><br>
-                        <textarea id="InstallerRemarks" class="form-group" placeholder="" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"></textarea>
-                    </p><br>
-                </div>
-
-
-                <br>
-        </div>
-        </div>
-        <br>
-        <div class="form-row">
-            <div class="form-group">
-                    <label for="MaterialRequisition_SubmittedBy">Client's printed name and signature:</label>
-                    <input type="text" id="MaterialRequisition_SubmittedBy" class="form-control" placeholder="" required>
-                </div>
-                <div class="form-group">
-                    <label for="MaterialRequisition_SubmittedBy">Prepared by:</label>
-                    <input type="text" id="MaterialRequisition_SubmittedBy" class="form-control" placeholder="" required>
-                </div>
-                <div class="form-group">
-                    <label for="MaterialRequisition_ReceivedBy">Approved by:</label>
-                    <input type="text" id="MaterialRequisition_ReceivedBy" class="form-control" placeholder="" required>
-                </div>
-            </div>
-        </div>
-        </div>
 
 
         <!-- Collection Receipt Section -->
@@ -1049,98 +889,55 @@
 
              <h4>Collection Receipt</h4>
                 <div class="quotation-button-group">
-                    
-                 <button class="btn btn-secondary">Print</button><i class='bx bx-print'></i>
-                 <button class="btn btn-secondary">Save</button><i class='bx bx-save'></i>    
-                 
+                 <button type="button" id="CollectionReceipt_Save" class="btn btn-secondary">Save</button><i class='bx bx-save'></i>
                  </div>
 
              </div>
-            
-            <div class="form-row">
-                <div class="">
-                    <p><h2>Mode of Payment:</p></p><br></h2>
-                    
-                    <input type="radio" id="CollectionReceipt_Cash" name="PaymentMethod" value="Cash" checked>
-                    <label for="CollectionReceipt_Cash">Cash</label>
 
-                    <input type="radio" id="CollectionReceipt_Check" name="PaymentMethod" value="Check">
-                    <label for="CollectionReceipt_Check">Check</label><br>
-    
-                    <br>
-                </div>
-                <div class="form-group">
-                    <label for="CollectionReceipt_AccountNumber">Account Number</label>
-                    <input type="text" id="CollectionReceipt_AccountNumber" class="form-control" placeholder="" required>
-                </div>
-                <div class="form-group">
-                    <label for="CollectionReceipt_Date">Date</label>
-                    <input type="datetime-local" id="CollectionReceipt_Date" class="form-control" placeholder="">
+            <div class="client-picker">
+                <label for="collectionReceiptJobOrderLookupInput">Select Job Order</label>
+                <div class="client-picker-controls">
+                    <input type="text" id="collectionReceiptJobOrderLookupInput" placeholder="Select a saved Job Order" readonly>
+                    <input type="hidden" id="CollectionReceipt_JobOrderID">
+                    <button type="button" id="openCollectionReceiptJobOrderPicker" class="square-button" aria-label="Open saved Job Orders" title="Open saved Job Orders">
+                        <i class="bx bx-search"></i>
+                    </button>
                 </div>
             </div>
 
-            <!-- Received From -->
-            <div class="form-section">
-                <h3 class="section-title">RECEIVED FROM</h3>
-
-                <div class="form-row">
-                <div class="form-group">
-                    <label for="CollectionReceipt_RegisteredName">Registered Name</label>
-                    <input type="text" id="CollectionReceipt_RegisteredName" class="form-control" placeholder="" required>
-                </div>
-                <div class="form-group">
-                    <label for="CollectionReceipt_TIN">TIN</label>
-                    <input type="text" id="CollectionReceipt_TIN" class="form-control" placeholder="" required>
-                </div>
-                <div class="form-group">
-                    <label for="CollectionReceipt_BusinessAddress">Business Address</label>
-                    <input type="text" id="CollectionReceipt_BusinessAddress" class="form-control" placeholder="" required>
-                </div>
-            </div>
-            </div>
-
-                <!-- Installer section feedback-->
-            <div class="form-section">
-                <h3 class="section-title">Description of Transaction</h3>
-
-                <div class="form-row">
-                <div class="form-group">
-                    <label for="CollectionReceipt_PaymentFor">Payment For: </label>
-                    <input type="text" id="CollectionReceipt__PaymentFor" class="form-control" placeholder="" required>
-                </div>
-                <div class="form-group">
-                    <label for="CollectionReceipt_Amount">Amount</label>
-                    <input type="text" id="CollectionReceipt_Amount" class="form-control" placeholder="" required>
-                </div>
-                <div class="form-group">
-                    <label for="CollectionReceipt_TotalAmount">Total Paid Amount</label>
-                    <input type="text" id="CollectionReceipt_TotalAmount" class="form-control" placeholder="" required>
-                </div>
-                <div class="form-group">
-                    <label for="CollectionReceipt_InvoiceRef">Invoice Ref. No.</label>
-                    <input type="text" id="CollectionReceipt_InvoiceRef" class="form-control" placeholder="" required>
+            <div id="collectionReceiptJobOrderPickerModal" class="client-picker-modal" hidden>
+                <div class="client-picker-dialog" role="dialog" aria-modal="true" aria-labelledby="collectionReceiptJobOrderPickerTitle">
+                    <div class="client-picker-dialog-header">
+                        <h3 id="collectionReceiptJobOrderPickerTitle">Select Saved Job Order</h3>
+                        <button type="button" id="closeCollectionReceiptJobOrderPicker" class="modal-close" aria-label="Close">&times;</button>
+                    </div>
+                    <div class="client-picker-search">
+                        <input type="text" id="collectionReceiptJobOrderPickerSearch" placeholder="Search saved Job Orders...">
+                    </div>
+                    <div class="client-picker-table-wrap">
+                        <table class="clients-table">
+                            <thead>
+                                <tr>
+                                    <th>Job Order ID</th>
+                                    <th>Title</th>
+                                    <th>Date Delivered</th>
+                                </tr>
+                            </thead>
+                            <tbody id="collectionReceiptJobOrderPickerTableBody"></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="form-section">
-                <h3 class="section-title">Check Details</h3>
-
-                <div class="form-row">
-                <div class="form-group">
-                    <label for="CollectionReceipt_CheckNumber">Check Number: </label>
-                    <input type="text" id="CollectionReceipt_CheckNumber" class="form-control" placeholder="" required>
-                </div>
-                <div class="form-group">
-                    <label for="CollectionReceipt_Bank">Bank: </label>
-                    <input type="text" id="CollectionReceipt_Bank" class="form-control" placeholder="" required>
-                </div>
-                <div class="form-group">
-                    <label for="CollectionReceipt_IssuedBy">Issued By:</label>
-                    <input type="text" id="CollectionReceipt_IssuedBy" class="form-control" placeholder="" required>
-                </div>
-            </div>
-        </div>
+            <form id="CollectionReceiptUploadForm" class="purchase-order-form" enctype="multipart/form-data">
+                <label for="CollectionReceipt_File" class="purchase-order-dropzone" id="CollectionReceipt_Dropzone">
+                    <i class="bx bx-cloud-upload"></i>
+                    <strong>Choose photos or drag them here</strong>
+                    <span>Upload image files up to 2 MB each</span>
+                    <input type="file" id="CollectionReceipt_File" name="collectionReceiptPhotos" accept="image/*" multiple>
+                </label>
+                <ul class="purchase-order-file-list" id="CollectionReceipt_FileList" aria-live="polite"></ul>
+            </form>
         </div>
 
         <br>
@@ -1158,6 +955,7 @@
 
            <thead>
                 <tr>
+                    <th>Client ID</th>
                     <th>Client Name</th>
                     <th>Telephone</th>
                     <th>Address</th>
@@ -1172,6 +970,167 @@
 
         </table>
             </div>
+
+            <div class="form-section saved-projects-section">
+                <h3 class="section-title">Saved Client Projects</h3>
+
+                <table class="clients-table">
+                    <thead>
+                        <tr>
+                            <th>Project ID</th>
+                            <th>Client ID</th>
+                            <th>Attention</th>
+                            <th>Business Style</th>
+                            <th>Client Subject</th>
+                            <th>Representative</th>
+                            <th>Contact Person</th>
+                            <th>Account Executive</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="clientsProjectTableBody">
+                        <!-- JavaScript will put saved client project data here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="form-section saved-quotations-section">
+                <h3 class="section-title">Saved Quotations</h3>
+                <div class="quotation-items-table-wrap">
+                    <table class="clients-table">
+                        <thead>
+                            <tr>
+                                <th>Quotation_ID</th>
+                                <th>Company</th>
+                                <th>Attention</th>
+                                <th>Title</th>
+                                <th>Total_Amount</th>
+                                <th>Date</th>
+                                <th>End_Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="savedQuotationsTableBody">
+                            <tr><td colspan="7">Saved quotations will appear here.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="form-section saved-conforme-section">
+                <h3 class="section-title">Saved Conforme</h3>
+                <div class="quotation-items-table-wrap">
+                    <table class="clients-table">
+                        <thead>
+                            <tr>
+                                <th>Conforme ID</th>
+                                <th>Client Name</th>
+                                <th>File Name</th>
+                                <th>File Size</th>
+                            </tr>
+                        </thead>
+                        <tbody id="savedConformeTableBody">
+                            <tr><td colspan="4">Saved Conforme files will appear here.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="form-section saved-purchase-order-section">
+                <h3 class="section-title">Saved Purchase Order</h3>
+                <div class="quotation-items-table-wrap">
+                    <table class="clients-table">
+                        <thead>
+                            <tr>
+                                <th>Purchase Order ID</th>
+                                <th>Client Name</th>
+                                <th>File Name</th>
+                                <th>File Size</th>
+                            </tr>
+                        </thead>
+                        <tbody id="savedPurchaseOrderTableBody">
+                            <tr><td colspan="4">Saved purchase orders will appear here.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="form-section saved-job-order-section">
+                <h3 class="section-title">Saved Job Orders</h3>
+                <div class="quotation-items-table-wrap">
+                    <table class="clients-table">
+                        <thead>
+                            <tr>
+                                <th>Job Order ID</th>
+                                <th>Client Name</th>
+                                <th>Title</th>
+                                <th>Installation Date</th>
+                                <th>Target Delivery</th>
+                                <th>Date Delivered</th>
+                                <th>Tiling</th>
+                                <th>Eyelet</th>
+                                <th>Bleeding</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="savedJobOrdersTableBody">
+                            <tr><td colspan="10">Saved Job Orders will appear here.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="form-section saved-delivery-receipt-section">
+                <h3 class="section-title">Saved Delivery Receipt</h3>
+                <div class="quotation-items-table-wrap">
+                    <table class="clients-table">
+                        <thead>
+                            <tr>
+                                <th>Client Name</th>
+                                <th>Project Title</th>
+                                <th>Address</th>
+                                <th>Terms</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody id="savedDeliveryReceiptsTableBody">
+                            <tr><td colspan="6">Saved delivery receipts will appear here.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="form-section saved-collection-receipt-section">
+                <h3 class="section-title">Saved Collection Receipt</h3>
+                <div class="quotation-items-table-wrap">
+                    <table class="clients-table">
+                        <thead>
+                            <tr>
+                                <th>Collection Receipt ID</th>
+                                <th>Client Name</th>
+                                <th>FileName</th>
+                                <th>File Size</th>
+                            </tr>
+                        </thead>
+                        <tbody id="savedCollectionReceiptsTableBody">
+                            <tr><td colspan="4">Saved collection receipts will appear here.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="conformePreviewModal" class="client-picker-modal" hidden>
+                <div class="client-picker-dialog conforme-preview-dialog" role="dialog" aria-modal="true" aria-labelledby="conformePreviewTitle">
+                    <div class="client-picker-dialog-header">
+                        <h3 id="conformePreviewTitle">Conforme Preview</h3>
+                        <button type="button" id="closeConformePreview" class="modal-close" aria-label="Close preview">&times;</button>
+                    </div>
+                    <iframe id="conformePreviewFrame" title="Conforme document preview"></iframe>
+                    <img id="collectionReceiptPreviewImage" class="collection-receipt-preview-image" alt="" hidden>
+                </div>
+            </div>
+
         </div>
 
     

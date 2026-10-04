@@ -1,0 +1,354 @@
+/* Warehouse module layout */
+.materials-header,
+.section-header,
+.purchased-materials-header,
+.quotation-header,
+.quotation-button-group {
+	display: flex;
+	align-items: center;
+}
+
+.materials-header,
+.quotation-header,
+.purchased-header,
+.materials-subheader {
+	justify-content: space-between;
+}
+
+.materials-header {
+	margin-bottom: 20px;
+}
+
+.materials-title,
+.purchased-title,
+.quotation-title,
+.materials-subtitle {
+	margin: 0;
+}
+
+.quotation-header {
+	border-bottom: 2px solid #a33;
+	padding-bottom: 10px;
+	margin-bottom: 20px;
+}
+
+.quotation-title {
+	font-size: 24px;
+}
+
+.quotation-button-group {
+	gap: 10px;
+}
+
+.materials-section {
+	margin-top: 24px;
+	padding-top: 10px;
+	border-top: 1px solid #d5d5d5;
+}
+
+.materials-subheader {
+	margin-bottom: 18px;
+	border-bottom: 2px solid #a33;
+	padding-bottom: 8px;
+}
+
+.materials-subtitle {
+	font-size: 20px;
+}
+
+.materials-grid-row {
+	display: grid;
+	grid-template-columns: repeat(5, minmax(160px, 1fr));
+	gap: 18px;
+}
+
+.total-cost-row {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 12px;
+}
+
+.total-cost-group {
+	width: 220px;
+}
+
+.approval-info-section {
+	margin-top: 30px;
+	border-top: 2px solid #a33;
+	padding-top: 16px;
+}
+
+.approval-title {
+	margin-bottom: 18px;
+	font-size: 20px;
+}
+
+.approval-grid-row {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(180px, 1fr));
+	gap: 18px;
+}
+
+.purchased-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 12px;
+	margin-bottom: 18px;
+}
+
+.inventory-header {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	gap: 12px;
+	margin-bottom: 18px;
+}
+
+.inventory-title {
+	margin: 0;
+}
+
+.inventory-actions {
+	display: flex;
+	align-items: center;
+	justify-self: end;
+	gap: 10px;
+}
+
+#purchasedMaterialsSection .inventory-header {
+	grid-template-columns: minmax(0, 1fr) max-content;
+}
+
+#purchasedMaterialsSection .inventory-actions {
+	width: max-content;
+	justify-self: end;
+	margin-left: auto;
+	gap: 10px;
+}
+
+.purchased-actions {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-left: auto;
+}
+
+.purchased-actions .btn,
+.inventory-actions .btn,
+.purchased-header > #openPurchasedMaterialsEditModal,
+.purchased-header > #openPurchasedMaterialsModal,
+.purchased-materials-edit-actions .btn {
+	background: #1b1b1d;
+	border: 1px solid #1b1b1d;
+	color: #fff;
+	transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.purchased-actions .btn:hover,
+.inventory-actions .btn:hover,
+.purchased-header > #openPurchasedMaterialsEditModal:hover,
+.purchased-header > #openPurchasedMaterialsModal:hover,
+.purchased-materials-edit-actions .btn:hover:not(:disabled) {
+	background: #f57a22;
+	border-color: #f57a22;
+	color: #fff;
+}
+
+.purchased-materials-edit-actions .btn:disabled {
+	background: #777;
+	border-color: #777;
+	cursor: not-allowed;
+}
+
+.purchased-materials-table-wrap {
+	overflow: auto;
+	border-radius: 10px;
+	border: 1px solid #e5e7eb;
+	background: #fff;
+}
+
+.purchased-materials-table {
+	width: 100%;
+	border-collapse: collapse;
+	min-width: 1100px;
+	font-size: 13px;
+}
+
+.purchased-materials-table thead tr {
+	background: #f8f8f8;
+	color: #2d2d2d;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+
+.purchased-materials-table th,
+.purchased-materials-table td {
+	border: 1px solid #e5e7eb;
+	padding: 10px 12px;
+	text-align: left;
+}
+
+.inventory-table-wrap {
+	overflow: auto;
+	border: 1px solid #e5e7eb;
+	border-radius: 10px;
+	background: #fff;
+}
+
+.inventory-table {
+	width: 100%;
+	min-width: 900px;
+	border-collapse: collapse;
+	font-size: 13px;
+}
+
+.inventory-table thead tr {
+	background: #f8f8f8;
+	color: #2d2d2d;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+
+.inventory-table th,
+.inventory-table td {
+	border: 1px solid #e5e7eb;
+	padding: 10px 12px;
+	text-align: left;
+}
+
+.inventory-empty-row td {
+	color: #6b7280;
+	text-align: center;
+}
+
+.purchased-materials-modal {
+	position: fixed;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(15, 23, 42, 0.5);
+	z-index: 3000;
+}
+
+.purchased-materials-modal[hidden] {
+	display: none;
+}
+
+.purchased-materials-dialog {
+	width: min(1100px, 92vw);
+	max-height: 86vh;
+	overflow: auto;
+	background: #fff;
+	border-radius: 14px;
+	border: 1px solid #e5e7eb;
+	box-shadow: 0 20px 45px rgba(15, 23, 42, 0.2);
+	padding: 20px 22px 18px;
+}
+
+.purchased-materials-edit-dialog {
+	width: min(1400px, 94vw);
+}
+
+.inventory-add-dialog {
+	width: min(1100px, 94vw);
+}
+
+.inventory-edit-dialog {
+	width: min(1400px, 94vw);
+}
+
+.purchased-materials-header {
+	justify-content: space-between;
+	margin-bottom: 18px;
+	padding-bottom: 12px;
+	border-bottom: 1px solid #e5e7eb;
+}
+
+.purchased-materials-modal-title {
+	margin: 0;
+}
+
+.modal-form-section {
+	margin: 0;
+	border: none;
+	box-shadow: none;
+	padding: 0;
+	background: transparent;
+}
+
+.inventory-modal-section {
+	margin: 0 0 18px;
+	padding: 0;
+	border: 0;
+	box-shadow: none;
+}
+
+.inventory-edit-table-wrap {
+	margin-bottom: 18px;
+}
+
+.inventory-edit-table {
+	min-width: 1050px;
+}
+
+.inventory-edit-table td {
+	padding: 6px;
+}
+
+.inventory-edit-table .form-control {
+	min-width: 100px;
+}
+
+.purchased-materials-close {
+	border: 0;
+	background: transparent;
+	color: #6b7280;
+	font-size: 30px;
+	line-height: 1;
+	cursor: pointer;
+}
+
+.purchase-material-picker-group {
+	max-width: 440px;
+	margin-bottom: 18px;
+}
+
+.edit-material-table-wrap {
+	margin-bottom: 18px;
+}
+
+.edit-material-table {
+	min-width: 1200px;
+}
+
+.edit-material-table td {
+	padding: 6px;
+}
+
+.edit-material-table .form-control {
+	min-width: 105px;
+}
+
+.purchased-materials-edit-actions {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.inventory-api-status {
+	margin: 12px 0;
+	color: #b42318;
+	font-size: 13px;
+}
+
+@media (max-width: 700px) {
+	.purchased-header {
+		align-items: center;
+		gap: 12px;
+	}
+
+	.purchased-actions {
+		flex-wrap: wrap;
+		justify-content: flex-end;
+	}
+}

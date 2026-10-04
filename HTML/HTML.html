@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi Rhema Graphics Inc.</title>
+    <script src="../JAVASCRIPT/auth.js"></script>
     <link rel="stylesheet" href="../CSS/Css.css">
     <link rel="stylesheet" href="../Css/MarketingSales.css">
     <link rel="stylesheet" href="../Css/Technical.css">
@@ -21,17 +22,21 @@
 
 <body>
 
-   
+    
     <!-- Sidebar Navigation -->
 <nav class="sidebar">
 
     <div class="sidebar-header">
 
+        <div class="sidebar-brand" aria-label="MiRhema Graphics Inc.">
+            <div class="sidebar-wordmark">
+                <span>MiRHEM</span>
+                <img src="../image/Stickman.png" alt="" class="sidebar-brand-figure">
+            </div>
+            <small>GRAPHICS INC.</small>
+        </div>
+
         <i class="bx bx-menu" id="sidebar-toggle"></i>
-
-        <h4>miRhema</h4>
-
-        <i class="bx bx-lock" id="lock-icon"></i>
 
     </div>
 
@@ -86,6 +91,8 @@
     </div>
 </nav>
 
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
     <header class="top-header">
         <div class="navbar">
             <a href="#">
@@ -95,8 +102,16 @@
         </div>
 
         <div class="header-right">
+            <button class="header-icon" type="button" aria-label="Notifications">
+                <i class="bx bx-bell"></i>
+                <span class="notification-dot" aria-hidden="true"></span>
+            </button>
             <img src="../image/profile.jpg" class="user-pic" onclick="toggleMenu()" alt="Profile Picture">
-            <span>Welcome, Admin</span>
+            <div class="header-user-text">
+                <span>Hello, User</span>
+                <small>Admin</small>
+            </div>
+            <i class="bx bx-chevron-down header-chevron" aria-hidden="true"></i>
         </div>
     </header>
 
@@ -112,19 +127,19 @@
 
             <a href="#" class="sub-menu-link">
                 <i class="bx bx-user-circle"></i>
-                <p>Edit Profile</p>
+                <p>Passwords</p>
                 <span>></span>
             </a>
 
-            <a href="#" class="sub-menu-link">
+            <a href="#" class="sub-menu-link" data-page="profile-settings">
                 <i class="bx bx-slider"></i>
-                <p>Setting & Privacy</p>
+                <p>Profile Settings</p>
                 <span>></span>
             </a>
 
             <a href="#" class="sub-menu-link">
                 <i class="bx bx-arrow-out-right-square-half"></i>
-                <p>Logout</p>
+                <p>Notifications</p>
                 <span>></span>
             </a>
         </div>

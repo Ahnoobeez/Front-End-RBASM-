@@ -11,44 +11,62 @@
     <body>
         <section>
         <div class="login-box">
-            <form action="HTML.html">
-                <h2>Login</h2>
-                <div class="input-box">
-                    <span class="icon"><ion-icon name="mail"></ion-icon></span>
-                    <input type="text" required>
-                    <label>Email</label>
-                </div>
-                <div class="input-box">
-                    <button class="icon password-toggle" type="button" aria-label="Show password" aria-pressed="false">
-                        <ion-icon name="eye-outline"></ion-icon>
-                    </button>
-                    <input id="password" type="password" required>
-                    <label>Password</label>
-                </div>
-                <div class="remember-forget">
-                    <label> <input type="checkbox">Remember Me</label>
-                    <a href="#">Forgot Password?</a>
-                </div>
-                <button class="btn" type="submit">Login</button>
-            </form>
+            <form id="loginForm">
+
+    <h2>Login</h2>
+
+    <div class="input-box">
+        <span class="icon">
+            <ion-icon name="person-outline"></ion-icon>
+        </span>
+
+        <input type="text" id="text" required>
+        <label>Username</label>
+    </div>
+
+    <div class="input-box">
+
+        <button
+            class="icon password-toggle"
+            type="button"
+            aria-label="Show password"
+            aria-pressed="false">
+
+            <ion-icon name="eye-outline"></ion-icon>
+
+        </button>
+
+        <input id="password" type="password" required>
+        <span class="icon password-lock" aria-hidden="true">
+            <ion-icon name="lock-closed"></ion-icon>
+        </span>
+        <label>Password</label>
+
+    </div>
+
+    <div class="remember-forget">
+
+        <label>
+            <input type="checkbox">
+            Remember Me
+        </label>
+
+        <a href="#">Forgot Password?</a>
+
+    </div>
+
+    <button class="btn" type="submit">
+        Login
+    </button>
+
+    <p id="loginMessage"></p>
+
+</form>
         </div>
         </section>
-
-        <script type="module" src="https://unpkg.com/ionicons@8.0.13/dist/ionicons/ionicons.esm.js"></script>
-        <script nomodule src="https://unpkg.com/ionicons@8.0.13/dist/ionicons/ionicons.js"></script>
-        <script>
-            const passwordInput = document.getElementById("password");
-            const passwordToggle = document.querySelector(".password-toggle");
-            const passwordIcon = passwordToggle.querySelector("ion-icon");
-
-            passwordToggle.addEventListener("click", () => {
-                const isPasswordVisible = passwordInput.type === "text";
-
-                passwordInput.type = isPasswordVisible ? "password" : "text";
-                passwordIcon.name = isPasswordVisible ? "eye-outline" : "eye-off-outline";
-                passwordToggle.setAttribute("aria-label", isPasswordVisible ? "Show password" : "Hide password");
-                passwordToggle.setAttribute("aria-pressed", String(!isPasswordVisible));
-            });
-        </script>
+        <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+        <script src="../JAVASCRIPT/login.js"></script>
+        
     </body>
 </html>

@@ -8,8 +8,13 @@
     </a>
 
     <a href="#" class="tab-link"
-        onclick="switchTab(event,'wasteMonitoringSection')">
-        Waste Monitoring
+        onclick="switchTab(event,'purchasedMaterialsSection')">
+        Purchased Materials
+    </a>
+
+    <a href="#" class="tab-link"
+        onclick="switchTab(event,'materialRequisitionSection')">
+        Material Requisition
     </a>
 
     <a href="#" class="tab-link"
@@ -23,213 +28,414 @@
 
 <div id="inventoryMasterSection" class="tab-content active-content">
 
-    <!-- Toolbar -->
-    <div class="toolbar">
-        <button class="btn btn-primary">+ Add Stock</button>
-        <button class="btn btn-secondary">Update Quantities</button>
-        <button class="btn btn-secondary">Supplier Management</button>
-        <button class="btn btn-text">💾 Save</button>
+    <div class="form-section">
+        <div class="section-header inventory-header">
+            <h3 class="section-title inventory-title">Inventory</h3>
+            <div class="inventory-actions">
+                <button id="openInventoryEditModal" class="btn" type="button">Edit</button>
+                <button id="openInventoryAddModal" class="btn" type="button">Add Materials</button>
+            </div>
+        </div>
+        <div class="table-wrap inventory-table-wrap">
+            <table class="inventory-table">
+                <thead>
+                    <tr>
+                        <th>Code Name</th>
+                        <th>Item Name</th>
+                        <th>Category</th>
+                        <th>Unit</th>
+                        <th>Buffer</th>
+                        <th>Balance</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="inventoryTableBody">
+                    <tr class="inventory-empty-row">
+                        <td colspan="7">No inventory materials added yet.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p id="inventoryApiStatus" class="inventory-api-status" role="status" hidden></p>
     </div>
 
-    <!-- ================= STOCK LEVELS ================= -->
-
-    <div class="form-section">
-
-        <h3 class="section-title">
-            Stock Levels & Buffer Monitoring
-        </h3>
-
-        <div class="form-row">
-
-            <div class="form-group">
-                <label>Item Code</label>
-                <input type="text" class="form-control">
+    <div id="inventoryAddModal" class="purchased-materials-modal" hidden>
+        <div class="purchased-materials-dialog inventory-add-dialog" role="dialog" aria-modal="true" aria-labelledby="inventoryAddTitle">
+            <div class="purchased-materials-header">
+                <h3 id="inventoryAddTitle" class="purchased-materials-modal-title">Add Materials</h3>
+                <button type="button" id="closeInventoryAddModal" class="purchased-materials-close" aria-label="Close">&times;</button>
             </div>
 
-            <div class="form-group">
-                <label>Item Name</label>
-                <input type="text" class="form-control">
-            </div>
+            <form id="addInventoryMaterialForm">
+                <div class="form-section inventory-modal-section">
+                    <h3 class="section-title">Materials</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="inventoryCodeName">Code Name</label>
+                            <input id="inventoryCodeName" name="codeName" type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="inventoryItemName">Item Name</label>
+                            <input id="inventoryItemName" name="itemName" type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="inventoryCategory">Category</label>
+                            <input id="inventoryCategory" name="category" type="text" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="inventoryUnit">Unit</label>
+                            <select id="inventoryUnit" name="unit" class="form-control">
+                                <option value="">Select Unit</option>
+                                <option>PCS</option>
+                                <option>Box</option>
+                                <option>Roll</option>
+                                <option>Bundle</option>
+                                <option>kg</option>
+                                <option>Liter</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="form-group">
-                <label>Current Quantity</label>
-                <input type="number" class="form-control">
-            </div>
+                <div class="form-section inventory-modal-section">
+                    <h3 class="section-title">Inventory</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="inventoryBeginningBalance">Beginning Balance</label>
+                            <input id="inventoryBeginningBalance" name="beginningBalance" type="number" step="1" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="inventoryBuffer">Buffer</label>
+                            <input id="inventoryBuffer" name="buffer" type="number" step="1" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="inventoryPurchased">Purchased</label>
+                            <input id="inventoryPurchased" name="purchased" type="number" step="1" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="inventoryRequest">Request</label>
+                            <input id="inventoryRequest" name="request" type="number" step="1" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="inventoryReturned">Returned</label>
+                            <input id="inventoryReturned" name="returned" type="number" step="1" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="inventoryBalance">Balance</label>
+                            <input id="inventoryBalance" name="balance" type="number" step="1" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="inventoryAvailableBalance">Available Balance</label>
+                            <input id="inventoryAvailableBalance" name="availableBalance" type="number" step="1" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="inventoryStatus">Status</label>
+                            <input id="inventoryStatus" name="status" type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
 
-            <div class="form-group">
-                <label>Minimum Buffer Level</label>
-                <input type="number" class="form-control">
-            </div>
-
+                <p id="inventoryAddError" class="inventory-api-status" role="alert" hidden></p>
+                <div class="purchased-materials-edit-actions">
+                    <button id="submitInventoryMaterial" class="btn" type="submit">Add Materials</button>
+                </div>
+            </form>
         </div>
-
-        <div class="form-row">
-
-            <div class="form-group">
-                <label>Category</label>
-                <input type="text" class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label>Supplier</label>
-                <input type="text" class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label>Payment Terms</label>
-                <input type="text" class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label>Reorder Alert Status</label>
-                <input type="text" class="form-control">
-            </div>
-
-        </div>
-
-        <div class="form-row full">
-
-            <div class="form-group">
-                <label>Seasonal Stock Level Suggestions (AI Generated)</label>
-                <textarea class="form-control" rows="5"></textarea>
-            </div>
-
-        </div>
-
     </div>
 
-    <!-- ================= STOCK TRANSFER ================= -->
-
-    <div class="form-section">
-
-        <h3 class="section-title">
-            Stock Transfer / Material Requisition Processing
-        </h3>
-
-        <div class="form-row">
-
-            <div class="form-group">
-                <label>Control Number</label>
-                <input type="text" class="form-control">
+    <div id="inventoryEditModal" class="purchased-materials-modal" hidden>
+        <div class="purchased-materials-dialog inventory-edit-dialog" role="dialog" aria-modal="true" aria-labelledby="inventoryEditTitle">
+            <div class="purchased-materials-header">
+                <h3 id="inventoryEditTitle" class="purchased-materials-modal-title">Edit Inventory</h3>
+                <button type="button" id="closeInventoryEditModal" class="purchased-materials-close" aria-label="Close">&times;</button>
             </div>
 
-            <div class="form-group">
-                <label>From Location / Department</label>
-                <input type="text" class="form-control">
+            <div class="form-group purchase-material-picker-group">
+                <label for="inventoryMaterialPicker">Material Picker</label>
+                <select id="inventoryMaterialPicker" class="form-control">
+                    <option value="">Select a material</option>
+                </select>
             </div>
 
-            <div class="form-group">
-                <label>To Location / Department</label>
-                <input type="text" class="form-control">
+            <div class="table-wrap inventory-table-wrap inventory-edit-table-wrap">
+                <table class="inventory-table inventory-edit-table">
+                    <thead>
+                        <tr>
+                            <th>Code Name</th>
+                            <th>Item Name</th>
+                            <th>Category</th>
+                            <th>Unit</th>
+                            <th>Buffer</th>
+                            <th>Balance</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="inventoryMaterialEditRow">
+                            <td><input class="form-control" aria-label="Code Name" disabled></td>
+                            <td><input class="form-control" aria-label="Item Name" disabled></td>
+                            <td><input class="form-control" aria-label="Category" disabled></td>
+                            <td><input class="form-control" aria-label="Unit" disabled></td>
+                            <td><input class="form-control" aria-label="Buffer" disabled></td>
+                            <td><input class="form-control" aria-label="Balance" disabled></td>
+                            <td><input class="form-control" aria-label="Status" disabled></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
-            <div class="form-group">
-                <label>Quantity Transferred</label>
-                <input type="number" class="form-control">
+            <p id="inventoryEditError" class="inventory-api-status" role="alert" hidden></p>
+            <div class="purchased-materials-edit-actions">
+                <button id="saveInventoryMaterialChanges" class="btn" type="button" disabled>Save Changes</button>
             </div>
-
         </div>
-
-        <div class="form-row">
-
-            <div class="form-group">
-                <label>Status</label>
-                <input type="text" class="form-control">
-            </div>
-
-        </div>
-
     </div>
 
 </div>
 
-    <!-- ================= WASTE MONITORING ================= -->
-
-<div id="wasteMonitoringSection" class="tab-content">
-
-    <!-- Toolbar -->
-    <div class="toolbar">
-        <button class="btn btn-primary">
-            📊 Generate Waste Report
-        </button>
-
-        <button class="btn btn-secondary">
-            Recalculate Constraints
-        </button>
-    </div>
-
-    <!-- Waste Monitoring Card -->
+<div id="materialRequisitionSection" class="tab-content">
     <div class="form-section">
+        <div class="quotation-header">
+            <h3 class="section-title quotation-title">Material Requisition</h3>
+            <div class="quotation-button-group">
+                <button class="btn btn-secondary" type="button">🖨️ Print</button>
+                <button class="btn btn-secondary" type="button">💾 Save</button>
+            </div>
+        </div>
 
-        <h3 class="section-title">
-            Resource Consumption & Operational Waste
-        </h3>
-
-        <!-- Row 1 -->
         <div class="form-row">
-
             <div class="form-group">
-                <label>Project ID</label>
-                <input type="text" class="form-control">
+                <label for="controlNumber">CONTROL NUMBER</label>
+                <input type="text" id="controlNumber" class="form-control" />
             </div>
-
             <div class="form-group">
-                <label>Materials Allocated</label>
-                <input type="text" class="form-control">
+                <label for="dateAndTime">DATE AND TIME</label>
+                <input type="datetime-local" id="dateAndTime" class="form-control" />
             </div>
-
             <div class="form-group">
-                <label>Materials Actually Used</label>
-                <input type="text" class="form-control">
+                <label for="fromDate">FROM</label>
+                <input type="text" id="fromDate" class="form-control" placeholder="" />
             </div>
-
             <div class="form-group">
-                <label>Variance (Waste)</label>
-                <input type="text" class="form-control">
+                <label for="toDate">TO</label>
+                <input type="text" id="toDate" class="form-control" placeholder="" />
             </div>
-
         </div>
 
-        <!-- Row 2 -->
-        <div class="form-row">
-
-            <div class="form-group">
-                <label>Raw Material Cost</label>
-                <input type="text" class="form-control">
+        <div class="form-section materials-section">
+            <div class="section-header materials-subheader">
+                <h3 class="section-title materials-subtitle">Materials</h3>
+                <button class="btn btn-primary" type="button">+ Add</button>
             </div>
 
-            <div class="form-group">
-                <label>Waste Cost Value</label>
-                <input type="text" class="form-control">
+            <div class="form-row materials-grid-row">
+                <div class="form-group">
+                    <label>MATERIAL NAME</label>
+                    <input type="text" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>PROJECT NAME</label>
+                    <input type="text" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>SUPPLIER</label>
+                    <input type="text" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>QUANTITY</label>
+                    <input type="text" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>UNIT COST</label>
+                    <input type="text" class="form-control" />
+                </div>
             </div>
 
-            <div class="form-group">
-                <label>Efficiency Rating</label>
-                <input type="text" class="form-control">
+            <div class="form-row total-cost-row">
+                <div class="form-group total-cost-group">
+                    <label>TOTAL COST</label>
+                    <input type="text" class="form-control" />
+                </div>
             </div>
-
-            <div class="form-group">
-                <label>Monitored By</label>
-                <input type="text" class="form-control">
-            </div>
-
         </div>
 
-        <!-- Row 3 -->
-        <div class="form-row full">
-
-            <div class="form-group">
-                <label>Waste Reduction Strategies & Remarks</label>
-                <textarea class="form-control" rows="5"></textarea>
+        <div class="form-section approval-info-section">
+            <h3 class="section-title approval-title">Approval Information</h3>
+            <div class="form-row approval-grid-row">
+                <div class="form-group">
+                    <label>SUBMITTED BY</label>
+                    <input type="text" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>NOTED BY</label>
+                    <input type="text" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>RECEIVED BY</label>
+                    <input type="text" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>APPROVED BY</label>
+                    <input type="text" class="form-control" />
+                </div>
             </div>
-
         </div>
-
     </div>
-
 </div>
 
+<!-- ================= PURCHASED MATERIALS ================= -->
 
+<div id="purchasedMaterialsSection" class="tab-content">
+    <div class="form-section">
+        <div class="section-header inventory-header">
+            <h3 class="section-title inventory-title">Purchased Materials</h3>
+            <div class="inventory-actions">
+                <button id="openPurchasedMaterialsEditModal" class="btn btn-secondary" type="button">Edit</button>
+                <button id="openPurchasedMaterialsModal" class="btn btn-primary" type="button">Add Purchase Material</button>
+            </div>
+        </div>
+
+        <div class="table-wrap purchased-materials-table-wrap">
+            <table class="purchased-materials-table">
+                <thead>
+                    <tr>
+                        <th>Code Name</th>
+                        <th>Item Name</th>
+                        <th>Supplier Name</th>
+                        <th>SI No.</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>SI Date</th>
+                        <th>Date Received</th>
+                    </tr>
+                </thead>
+                <tbody id="purchasedMaterialsTableBody">
+                    <tr>
+                        <td colspan="8">Loading purchased materials...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="purchasedMaterialsModal" class="purchased-materials-modal" hidden>
+        <div class="purchased-materials-dialog" role="dialog" aria-modal="true" aria-labelledby="purchasedMaterialsTitle">
+            <div class="purchased-materials-header">
+                <h3 id="purchasedMaterialsTitle" class="purchased-materials-modal-title">Purchased Materials</h3>
+                <button type="button" id="closePurchasedMaterialsModal" class="purchased-materials-close" aria-label="Close">&times;</button>
+            </div>
+
+            <form id="addPurchasedMaterialForm">
+                <div class="form-section modal-form-section">
+                    <h3 class="section-title">Purchased</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="addPurchasedMaterialPicker">Material</label>
+                            <select id="addPurchasedMaterialPicker" name="material_ID" class="form-control" required>
+                                <option value="">Select Material</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="purchaseDateReceived">Date Received</label>
+                            <input id="purchaseDateReceived" name="date_Received_Item" type="date" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="purchaseSIDate">SI Date</label>
+                            <input id="purchaseSIDate" name="sI_Date" type="date" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="purchaseSINumber">SI No.</label>
+                            <input id="purchaseSINumber" name="sI_No" type="number" step="1" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="purchaseSupplierName">Supplier Name</label>
+                            <input id="purchaseSupplierName" name="supplier_Name" type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="purchaseQuantity">Quantity</label>
+                            <input id="purchaseQuantity" name="quantity" type="number" step="1" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="purchaseUnitPrice">Unit Price</label>
+                            <input id="purchaseUnitPrice" name="unit_price" type="number" step="1" min="0" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="purchaseAmount">Amount</label>
+                            <input id="purchaseAmount" name="amount" type="number" step="1" min="0" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group full-width">
+                            <label for="purchaseRemarks">Remarks</label>
+                            <textarea id="purchaseRemarks" name="remarks" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <p id="purchasedMaterialAddError" class="inventory-api-status" role="alert" hidden></p>
+                <div class="purchased-materials-edit-actions">
+                    <button id="submitPurchasedMaterial" class="btn" type="submit">Save Purchase Material</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="purchasedMaterialsEditModal" class="purchased-materials-modal" hidden>
+        <div class="purchased-materials-dialog purchased-materials-edit-dialog" role="dialog" aria-modal="true" aria-labelledby="purchasedMaterialsEditTitle">
+            <div class="purchased-materials-header">
+                <h3 id="purchasedMaterialsEditTitle" class="purchased-materials-modal-title">Edit Purchased Material</h3>
+                <button type="button" id="closePurchasedMaterialsEditModal" class="purchased-materials-close" aria-label="Close">&times;</button>
+            </div>
+
+            <div class="form-group purchase-material-picker-group">
+                <label for="purchaseMaterialPicker">Purchase Material Picker</label>
+                <select id="purchaseMaterialPicker" class="form-control">
+                    <option value="">Select a purchase material</option>
+                </select>
+            </div>
+
+            <div class="table-wrap purchased-materials-table-wrap edit-material-table-wrap">
+                <table class="purchased-materials-table edit-material-table">
+                    <thead>
+                        <tr>
+                            <th>Code Name</th>
+                            <th>Item Name</th>
+                            <th>Supplier Name</th>
+                            <th>SI No.</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>SI Date</th>
+                            <th>Date Received</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="purchasedMaterialEditRow">
+                            <td><input class="form-control" aria-label="Code Name" disabled></td>
+                            <td><input class="form-control" aria-label="Item Name" disabled></td>
+                            <td><input class="form-control" aria-label="Supplier Name" disabled></td>
+                            <td><input class="form-control" aria-label="SI No." type="number" step="1" disabled></td>
+                            <td><input class="form-control" aria-label="Quantity" type="number" step="1" disabled></td>
+                            <td><input class="form-control" aria-label="Price" type="number" step="1" disabled></td>
+                            <td><input class="form-control" aria-label="SI Date" type="date" disabled></td>
+                            <td><input class="form-control" aria-label="Date Received" type="date" disabled></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p id="purchasedMaterialEditError" class="inventory-api-status" role="alert" hidden></p>
+            <div class="purchased-materials-edit-actions">
+                <button id="savePurchasedMaterialChanges" class="btn btn-primary" type="button" disabled>Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- ================= SAVED RECORDS ================= -->
 

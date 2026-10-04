@@ -2,13 +2,8 @@
 <div class="tab-nav">
 
     <a href="#" class="tab-link active"
-       onclick="switchTab(event, 'iamAuditSection')">
-        IAM & Audit Trail
-    </a>
-
-    <a href="#" class="tab-link"
-       onclick="switchTab(event, 'equipmentSection')">
-        Equipment Maintenance
+       onclick="switchTab(event, 'userAccountsSection')">
+        User Accounts
     </a>
 
     <a href="#" class="tab-link"
@@ -19,285 +14,68 @@
 </div>
 
 
-<!-- Toolbar -->
-<div class="toolbar">
-
-    <button class="btn btn-primary">
-        + Create Admin Account
-    </button>
-
-    <button class="btn">
-        Reset Passwords
-    </button>
-
-    <button class="btn">
-        Export Audit Log
-    </button>
-
-</div>
-
-
 <!-- ==========================================
-     IAM & AUDIT TRAIL
+     USER ACCOUNTS
 ========================================== -->
 
-<div id="iamAuditSection" class="tab-content active-content">
+<div id="userAccountsSection" class="tab-content active-content">
 
-    <!-- Identity & Access Management -->
-    <div class="form-section">
+    <div class="admin-user-layout">
+    <div class="form-section admin-user-section">
+        <h3 class="section-title admin-section-title">Create User Account</h3>
 
-        <h3 class="section-title">
-            Identity & Access Management (RBAC)
-        </h3>
-
-        <div class="form-row">
-
+        <div class="admin-user-form-grid">
             <div class="form-group">
-                <label>User ID</label>
-                <input type="text" class="form-control">
+                <label for="adminEmployeeNumber">Employee Number</label>
+                <select id="adminEmployeeNumber" class="form-control">
+                    <option value="">Select an employee</option>
+                </select>
             </div>
-
             <div class="form-group">
-                <label>First Name</label>
-                <input type="text" class="form-control">
+                <label for="adminUsername">Username</label>
+                <input id="adminUsername" type="text" class="form-control">
             </div>
-
             <div class="form-group">
-                <label>Last Name</label>
-                <input type="text" class="form-control">
+                <label for="adminPassword">Password</label>
+                <input id="adminPassword" type="password" class="form-control">
             </div>
-
             <div class="form-group">
-                <label>Email</label>
-                <input type="email" class="form-control">
+                <label for="adminConfirmPassword">Confirm Password</label>
+                <input id="adminConfirmPassword" type="password" class="form-control">
             </div>
-
+            <div class="form-group">
+                <label for="adminEmail">Email</label>
+                <input id="adminEmail" type="email" class="form-control">
+            </div>
         </div>
 
-
-        <div class="form-row">
-
-            <div class="form-group">
-                <label>Username</label>
-                <input type="text" class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label>Contact Number</label>
-                <input type="text" class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label>Confirm Password</label>
-                <input type="password" class="form-control">
-            </div>
-
+        <div class="admin-create-account-action">
+            <button class="btn btn-primary" type="button">Create User Account</button>
         </div>
-
-
-        <div class="form-row">
-
-            <div class="form-group">
-                <label>Role (Access Level)</label>
-                <input type="text" class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label>Department Assigned</label>
-                <input type="text" class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label>Account Status</label>
-                <input type="text" class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label>Reset Status</label>
-                <input type="text" class="form-control">
-            </div>
-
-        </div>
-
     </div>
 
-
-    <!-- Immutable System Audit Trail -->
-    <div class="form-section">
-
-        <h3 class="section-title">
-            Immutable System Audit Trail
-        </h3>
-
-        <div class="form-row">
-
-            <div class="form-group">
-                <label>Log ID</label>
-                <input type="text" class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label>User ID</label>
-                <input type="text" class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label>Action Performed</label>
-                <input type="text" class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label>Module</label>
-                <input type="text" class="form-control">
-            </div>
-
+    <div class="form-section admin-user-section">
+        <h3 class="section-title admin-section-title">Existing User Accounts</h3>
+        <div class="admin-user-table-wrap">
+            <table class="admin-user-table">
+                <thead>
+                    <tr>
+                        <th>Employee ID</th>
+                        <th>Username</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="6">No user accounts found.</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-
-
-        <div class="form-row">
-
-            <div class="form-group">
-                <label>Timestamp</label>
-                <input type="text" class="form-control">
-            </div>
-
-        </div>
-
     </div>
-
-</div>
-
-
-<!-- ==========================================
-     EQUIPMENT MAINTENANCE
-========================================== -->
-
-<div id="equipmentSection" class="tab-content">
-
-    <!-- Toolbar -->
-    <div class="toolbar">
-
-        <button class="btn btn-primary">
-            + Schedule Maintenance
-        </button>
-
-        <button class="btn">
-            Mark Resolved
-        </button>
-
-        <button class="btn">
-            💾 Save
-        </button>
-
-    </div>
-
-
-    <!-- Equipment Maintenance Scheduling -->
-    <div class="form-section">
-
-        <h3 class="section-title">
-            Equipment Maintenance Scheduling
-        </h3>
-
-        <!-- First Row -->
-        <div class="form-row">
-
-            <div class="form-group">
-                <label>Equipment / Machine ID</label>
-                <input
-                    type="text"
-                    class="form-control"
-                >
-            </div>
-
-            <div class="form-group">
-                <label>Equipment Name</label>
-                <input
-                    type="text"
-                    class="form-control"
-                >
-            </div>
-
-            <div class="form-group">
-                <label>Last Maintenance</label>
-                <input
-                    type="date"
-                    class="form-control"
-                >
-            </div>
-
-            <div class="form-group">
-                <label>Next Scheduled Date</label>
-                <input
-                    type="date"
-                    class="form-control"
-                >
-            </div>
-
-        </div>
-
-
-        <!-- Second Row -->
-        <div class="form-row">
-
-            <div class="form-group">
-                <label>Assigned Technician</label>
-                <input
-                    type="text"
-                    class="form-control"
-                >
-            </div>
-
-            <div class="form-group">
-                <label>Priority Level</label>
-                <input
-                    type="text"
-                    class="form-control"
-                >
-            </div>
-
-            <div class="form-group">
-                <label>Status</label>
-                <input
-                    type="text"
-                    class="form-control"
-                >
-            </div>
-
-            <div class="form-group">
-                <label>Alert Active?</label>
-                <input
-                    type="text"
-                    class="form-control"
-                >
-            </div>
-
-        </div>
-
-
-        <!-- Maintenance Guidelines -->
-        <div class="form-row full">
-
-            <div class="form-group">
-
-                <label>
-                    Maintenance Guidelines & History
-                </label>
-
-                <textarea
-                    class="form-control"
-                    rows="4"
-                ></textarea>
-
-            </div>
-
-        </div>
-
     </div>
 
 </div>

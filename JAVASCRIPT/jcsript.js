@@ -10,9 +10,6 @@
 
 const sidebar = document.querySelector(".sidebar");
 const sidebarToggleBtn = document.getElementById("sidebar-toggle");
-const sidebarLockBtn = document.getElementById("lock-icon");
-
-let isLocked = true;
 
 
 // -----------------------------------------------------
@@ -29,69 +26,11 @@ function toggleSidebar() {
 
 
 // -----------------------------------------------------
-// Toggle Sidebar Lock
-// -----------------------------------------------------
-
-function toggleLock() {
-
-    if (!sidebar || !sidebarLockBtn) return;
-
-    isLocked = !isLocked;
-
-    if (isLocked) {
-
-        // Locked
-        sidebarLockBtn.classList.remove("bx-lock-open-alt");
-        sidebarLockBtn.classList.add("bx-lock");
-
-    } else {
-
-        // Unlocked
-        sidebarLockBtn.classList.remove("bx-lock");
-        sidebarLockBtn.classList.add("bx-lock-open-alt");
-
-    }
-
-}
-
-
-// -----------------------------------------------------
-// Sidebar Hover
-// Works only when sidebar is unlocked
-// -----------------------------------------------------
-
-if (sidebar) {
-
-    sidebar.addEventListener("mouseenter", () => {
-
-        if (!isLocked) {
-            sidebar.classList.remove("close");
-        }
-
-    });
-
-
-    sidebar.addEventListener("mouseleave", () => {
-
-        if (!isLocked) {
-            sidebar.classList.add("close");
-        }
-
-    });
-
-}
-
-
-// -----------------------------------------------------
-// Sidebar Buttons
+// Sidebar Button
 // -----------------------------------------------------
 
 if (sidebarToggleBtn) {
     sidebarToggleBtn.addEventListener("click", toggleSidebar);
-}
-
-if (sidebarLockBtn) {
-    sidebarLockBtn.addEventListener("click", toggleLock);
 }
 
 
@@ -135,6 +74,22 @@ function initializePage(page) {
 
             if (typeof initializeTechnicalPage === "function") {
                 initializeTechnicalPage();
+            }
+
+            break;
+
+        case "production":
+
+            if (typeof initializeProductionPage === "function") {
+                initializeProductionPage();
+            }
+
+            break;
+
+        case "warehouse":
+
+            if (typeof initializeWarehousePage === "function") {
+                initializeWarehousePage();
             }
 
             break;
@@ -197,6 +152,16 @@ function loadPage(page) {
         return;
     }
 
+    // Access check (canAccess comes from auth.js)
+    if (!canAccess(page)) {
+        mainContent.innerHTML = `
+            <div class="page-error">
+                <h2>403 - Access Denied</h2>
+                <p>You don't have permission to open this module.</p>
+            </div>
+        `;
+        return;
+    }
 
     // Show loading message
     mainContent.innerHTML = `
@@ -205,58 +170,27 @@ function loadPage(page) {
         </div>
     `;
 
-
     fetch(`../main-content/${page}.html`)
-
         .then(response => {
-
             if (!response.ok) {
-                throw new Error(
-                    `${page}.html not found (${response.status})`
-                );
+                throw new Error(`${page}.html not found (${response.status})`);
             }
-
             return response.text();
-
         })
-
-
         .then(html => {
-
-            // Insert HTML
             mainContent.innerHTML = html;
-
-
-            // Initialize page-specific JS
             initializePage(page);
-
-
             console.log(`${page}.html loaded successfully.`);
-
         })
-
-
         .catch(error => {
-
             console.error("Page loading error:", error);
-
-
             mainContent.innerHTML = `
                 <div class="page-error">
-
                     <h2>404 - Page Not Found</h2>
-
-                    <p>
-                        The page
-                        <strong>${page}.html</strong>
-                        could not be loaded.
-                    </p>
-
+                    <p>The page <strong>${page}.html</strong> could not be loaded.</p>
                 </div>
             `;
-
         });
-
 }
 
 
@@ -304,28 +238,41 @@ menuLinks.forEach(link => {
 // DEFAULT PAGE
 // =====================================================
 
+// =====================================================
+// DEFAULT PAGE
+// =====================================================
+
 document.addEventListener("DOMContentLoaded", () => {
 
-    // Find Analytics link
-    const analyticsLink = document.querySelector(
-        '.link[data-page="analytics"]'
-    );
+    // First module this user is allowed to open (from auth.js)
+    const startPage = getDefaultPage();
 
-
-    // Set Analytics as active
-    if (analyticsLink) {
-
-        menuLinks.forEach(item => {
-            item.classList.remove("active-link");
-        });
-
-        analyticsLink.classList.add("active-link");
-
+    if (!startPage) {
+        mainContent.innerHTML = `
+            <div class="page-error">
+                <h2>No Access</h2>
+                <p>Your account has no module access. Please contact an administrator.</p>
+            </div>
+        `;
+        return;
     }
 
+    // Find the sidebar link for that page
+    const startLink = document.querySelector(
+        `.link[data-page="${startPage}"]`
+    );
+
+    // Set it as active
+    menuLinks.forEach(item => {
+        item.classList.remove("active-link");
+    });
+
+    if (startLink) {
+        startLink.classList.add("active-link");
+    }
 
     // Load default page
-    loadPage("analytics");
+    loadPage(startPage);
 
 });
 
